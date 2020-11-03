@@ -1,0 +1,39 @@
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>AR All Root</title>
+  <meta name="description" content="All Random All Root">
+  <meta name="author" content="Ryan Haswell">
+
+  <link rel="stylesheet" href="css/styles.css?v=1.0">
+
+</head>
+
+<body>
+  <h1>All Random All Root</h1>
+
+  <h3>Enter your parameters below, or die</h3>
+
+  <div>
+    <h5>Players:</h5>
+    <ul id="playerList">
+    </ul>
+  </div>
+
+  <form onSubmit="addPlayer(event)">
+    <label for="playerNameInput">Player Name:</label>
+    <input id="playerNameInput" name="name">
+    <input type="submit" value="Add Player">
+  </form>
+
+  <form onSubmit="generateGame(event)">
+    <input type="submit" value="Randomize">
+  </form>
+
+  <div id="output"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
