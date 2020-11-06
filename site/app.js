@@ -38,14 +38,37 @@ function addPlayer(event) {
 
 function randomizeFactions() {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
-  const minReach = DATA.REACH_BY_PLAYER_COUNT;
+  const numPlayers = State.playerList.length;
+  const players = Array.from(State.playerList);
+  const minReach = DATA.REACH_BY_PLAYER_COUNT[numPlayers];
+  var currentReach = 0;
+  const selectedFactions = [];
 
-  return [
-    {
-      playerName: "",
-      factionId: ""
+  if(numPlayers > availableFactions.length) {
+    throw "Not enough available factions for this player count.";
+  }
+
+  for(var i = 0; i < numPlayers; i++) {
+    // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
+    //  determining the minimum reach that the last faction could have to still hit the target reach value.
+    const biggestCombinationStartIndex = availableFactions.length - (numPlayers - 1 - selectedFactions.length);
+    const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => faction.reach).reduce((total, reach) => total += reach, 0);
+    // Drop any factions from the list that would no longer allow us to hit the target reach
+    while (availableFactions.length > 0 && availableFactions[0].reach < minimumFactionReach) {
+      availableFactions.splice(0, 1);
     }
-  ]
+    if (availableFactions.length == 0) {
+      throw "There is no combination of available factions which hits the target reach.";
+    }
+    // Pluck random faction
+    const factionIndex = Math.floor(Math.random() * availableFactions.length);
+    const faction = availableFactions[factionIndex];
+    selectedFactions.push(faction);
+    availableFactions.splice(factionIndex, 1);
+    currentReach += faction.reach;
+  }
+
+  return selectedFactions;
 }
 
 function randomizeMap() {
@@ -56,22 +79,33 @@ function randomizeMap() {
   }
 }
 
-function randomizeSeats() {
+function randomizePlayerSetup() {
+  const players = Array.from(State.playerList);
+  const factions = randomizeFactions();
+  // randomly assign factions to players
+  return players.map(player => {
+    return {
+      player: player,
+      faction: factions.splice(Math.floor(Math.random() * factions.length), 1),
+
+    }
+  });
+}
+
+function randomizeGame() {
+  const playerSetups = randomizePlayerSetup();
   return {
-    tableSize: 5,
-    positions: [ "playerName1", "playerName2", "playerName3", "playerName4", "playerName5" ]
+    tableSize: playerSetups.length,
+    seats: playerSetups.sort(() => Math.random() - 0.5),
+    map: randomizeMap()
   }
 }
 
 function generateGame(event) {
   event.preventDefault();
   console.log("generate game. event: " + JSON.stringify(event));
-  const output = {
-    players: randomizeFactions(),
-    map: randomizeMap(),
-    table: randomizeSeats()
-  }
-  console.log(JSON.stringify(output)); 
+  const game = randomizeGame();
+  console.log(JSON.stringify(game, null, 1)); 
 }
 
 loadState();
