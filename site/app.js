@@ -1,7 +1,8 @@
 const PLAYER_LIST_STORAGE_KEY = "playerList";
 
 const State = {
-  playerList: []
+  playerList: [],
+  game: null
 }
 
 function loadState(){
@@ -108,13 +109,10 @@ function randomizePlayerSetup() {
   const players = Array.from(State.playerList);
   const factions = randomizeFactions();
   // randomly assign factions to players
-  return players.map(player => {
-    return {
+  return players.map(player => ({
       player: player,
-      faction: factions.splice(Math.floor(Math.random() * factions.length), 1),
-
-    }
-  });
+      faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
+    }));
 }
 
 function randomizeGame() {
@@ -126,10 +124,56 @@ function randomizeGame() {
   }
 }
 
+function getSeatListHtml(seats) {
+  const seatList = document.createElement("ul");
+  var seatIndex = 1;
+  seats.forEach(seat => {
+    const seatListItem = document.createElement("li");
+    const firstPlayerText = seatIndex === 1 ? `, going first` : ``;
+    const seatText = `In seat ${seatIndex}, ${seat.player} will play ${seat.faction.name}${firstPlayerText}.`;
+    seatListItem.appendChild(document.createTextNode(seatText));
+    seatList.appendChild(seatListItem);
+    seatIndex++;
+  });
+  return seatList;
+}
+
+function getMapHtml(map) {
+  const mapHtml = document.createElement("div");
+  const mapText = document.createElement("span");
+  mapText.appendChild(document.createTextNode(`The game will be played on the ${map.name} map, with the following clearings:`));
+  mapHtml.appendChild(mapText);
+  const clearingList = document.createElement("ol");
+  map.clearings.forEach(clearing => {
+    const clearingItem = document.createElement("li");
+    clearingItem.appendChild(document.createTextNode(clearing.name));
+    clearingList.appendChild(clearingItem);
+  });
+  mapHtml.append(clearingList);
+  return mapHtml;
+}
+
+function populateGameHtml() {
+  const gameContainer = document.getElementById("output");
+  while(gameContainer.firstChild) {
+    gameContainer.removeChild(gameContainer.firstChild);
+  }
+  const game = State.game;
+  const playersHeader = document.createElement("h2");
+  playersHeader.appendChild(document.createTextNode("THE CONTENDERS"));
+  gameContainer.appendChild(playersHeader);
+  gameContainer.appendChild(getSeatListHtml(game.seats));
+  const mapHeader = document.createElement("h2");
+  mapHeader.appendChild(document.createTextNode("THE MAP"));
+  gameContainer.appendChild(mapHeader);
+  gameContainer.appendChild(getMapHtml(game.map));
+}
+
 function generateGame(event) {
   event.preventDefault();
-  const game = randomizeGame();
-  console.log(JSON.stringify(game, null, 1)); 
+  State.game = randomizeGame();
+  populateGameHtml();
+  console.log(JSON.stringify(State.game, null, 1)); 
 }
 
 loadState();

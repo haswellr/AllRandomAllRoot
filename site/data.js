@@ -4,36 +4,36 @@ const _FACTIONS = {
     reach: 10
   },
   UNDERGROUND_DUCHY: {
-    name: "Underground Duchy",
+    name: "The Underground Duchy",
     reach: 8
   },
   EYRIE_DYNASTIES: {
-    name: "Eyrie Dynasties",
+    name: "The Eyrie Dynasties",
     reach: 7
   },
   VAGABOND_1: {
-    name: "Vagabond (first)",
+    name: "The Vagabond",
     reach: 5
   },
   RIVERFOLK_COMPANY: {
-    name: "Riverfolk Company",
+    name: "The Riverfolk Company",
     reach: 5
   },
   WOODLAND_ALLIANCE: {
-    name: "Woodland Alliance",
+    name: "The Woodland Alliance",
     reach: 3
   },
   CORVID_CONSPIRACY: {
-    name: "Corvid Conspiracy",
+    name: "The Corvid Conspiracy",
     reach: 3
   },
   VAGABOND_2: {
-    name: "Vagabond (second)",
+    name: "The Vagabond, Jr.",
     reach: 2,
     onlyPresentWith: ["VAGABOND_1"]
   },
   LIZARD_CULT: {
-    name: "Lizard Cult",
+    name: "The Lizard Cult",
     reach: 2
   }
 }
