@@ -29,7 +29,8 @@ const _FACTIONS = {
   },
   VAGABOND_2: {
     name: "Vagabond (second)",
-    reach: 2
+    reach: 2,
+    onlyPresentWith: ["VAGABOND_1"]
   },
   LIZARD_CULT: {
     name: "Lizard Cult",

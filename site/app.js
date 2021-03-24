@@ -36,6 +36,16 @@ function addPlayer(event) {
   populatePlayerListHtml();
 }
 
+function canFactionBePicked(faction, selectedFactions) {
+  if (faction.onlyPresentWith && faction.onlyPresentWith.length > 0) {
+    const requiredFactions = faction.onlyPresentWith.map(presentWith => DATA.FACTIONS[presentWith] || console.error(`Invalid faction in onlyPresentWith for ${faction.name}: ${presentWith}`));
+    if (requiredFactions.filter(requiredFaction => selectedFactions.indexOf(requiredFaction) === -1).length > 0) {
+      return false;
+    }
+  }
+  return true;
+}
+
 function randomizeFactions() {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
   const numPlayers = State.playerList.length;
@@ -61,10 +71,12 @@ function randomizeFactions() {
       throw "There is no combination of available factions which hits the target reach.";
     }
     // Pluck random faction
-    const factionIndex = Math.floor(Math.random() * availableFactions.length);
-    const faction = availableFactions[factionIndex];
+    const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions));
+    const pickableFactionIndex = Math.floor(Math.random() * pickableFactions.length);
+    const faction = pickableFactions[pickableFactionIndex];
     selectedFactions.push(faction);
-    availableFactions.splice(factionIndex, 1);
+    const availableFactionsIndex = availableFactions.indexOf(faction);
+    availableFactions.splice(availableFactionsIndex, 1);
     currentReach += faction.reach;
   }
 
