@@ -59,13 +59,16 @@ const _MAPS = {
 
 const _CLEARING_TYPES = {
   FOX: {
-    name: "Fox"
+    name: "Fox",
+    color: "#FF0000"
   },
   MOUSE: {
-    name: "Mouse"
+    name: "Mouse",
+    color: "#FF8C00"
   },
   RABBIT: {
-    name: "Rabbit"
+    name: "Rabbit",
+    color: "#FFCC00"
   }
 }
 

@@ -130,8 +130,7 @@ function getSeatListHtml(seats) {
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
     const firstPlayerText = seatIndex === 1 ? `, going first` : ``;
-    const seatText = `In seat ${seatIndex}, ${seat.player} will play ${seat.faction.name}${firstPlayerText}.`;
-    seatListItem.appendChild(document.createTextNode(seatText));
+    seatListItem.innerHTML = `In seat ${seatIndex}, <b>${seat.player}</b> will play <b>${seat.faction.name}</b>${firstPlayerText}.`;
     seatList.appendChild(seatListItem);
     seatIndex++;
   });
@@ -147,6 +146,7 @@ function getMapHtml(map) {
   map.clearings.forEach(clearing => {
     const clearingItem = document.createElement("li");
     clearingItem.appendChild(document.createTextNode(clearing.name));
+    clearingItem.style.color = clearing.color;
     clearingList.appendChild(clearingItem);
   });
   mapHtml.append(clearingList);
