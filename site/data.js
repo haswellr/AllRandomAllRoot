@@ -41,19 +41,31 @@ const _FACTIONS = {
 const _MAPS = {
   WOODLAND: {
     name: "Woodland",
-    randomClearings: false
+    numClearings: 12
   },
   WINTER: {
     name: "Winter",
-    randomClearings: true
+    numClearings: 12
   },
   LAKE: {
     name: "Lake",
-    randomClearings: true
+    numClearings: 12
   },
   MOUNTAIN: {
     name: "Mountain",
-    randomClearings: true
+    numClearings: 12
+  }
+}
+
+const _CLEARING_TYPES = {
+  FOX: {
+    name: "Fox"
+  },
+  MOUSE: {
+    name: "Mouse"
+  },
+  RABBIT: {
+    name: "Rabbit"
   }
 }
 
@@ -71,7 +83,9 @@ const DATA = {
     9: 28
   },
   MAPS: _MAPS,
-  MAP_LIST: Object.keys(_MAPS).map(mapKey => _MAPS[mapKey])
+  MAP_LIST: Object.keys(_MAPS).map(mapKey => _MAPS[mapKey]),
+  CLEARING_TYPES: _CLEARING_TYPES,
+  CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey])
 }
 
 console.log("-- DATA --")

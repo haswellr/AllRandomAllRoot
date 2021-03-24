@@ -83,11 +83,24 @@ function randomizeFactions() {
   return selectedFactions;
 }
 
+function randomizeClearings(gameMap) {
+  const numOfEachClearingType = Math.ceil(gameMap.numClearings / DATA.CLEARING_TYPES_LIST.length);
+  const availableClearings = [];
+  for (var i = 0; i < numOfEachClearingType; i++) {
+    DATA.CLEARING_TYPES_LIST.forEach(clearingType => availableClearings.push(clearingType));
+  }
+  return availableClearings
+    .map(clearing => ({ sortIndex: Math.random(), value: clearing }))
+    .sort((a, b) => a.sortIndex - b.sortIndex)
+    .map(sortableClearing => sortableClearing.value)
+    .splice(0, gameMap.numClearings);
+}
+
 function randomizeMap() {
   const map = DATA.MAP_LIST[Math.floor(Math.random() * DATA.MAP_LIST.length)];
   return {
-    id: map,
-    clearings: []
+    name: map.name,
+    clearings: randomizeClearings(map)
   }
 }
 
@@ -115,7 +128,6 @@ function randomizeGame() {
 
 function generateGame(event) {
   event.preventDefault();
-  console.log("generate game. event: " + JSON.stringify(event));
   const game = randomizeGame();
   console.log(JSON.stringify(game, null, 1)); 
 }
