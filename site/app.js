@@ -140,7 +140,7 @@ function getSeatListHtml(seats) {
 function getMapHtml(map) {
   const mapHtml = document.createElement("div");
   const mapText = document.createElement("span");
-  mapText.appendChild(document.createTextNode(`The game will be played on the ${map.name} map, with the following clearings:`));
+  mapText.appendChild(document.createTextNode(`The game will be played on the ${map.name} map, with the following clearings in order:`));
   mapHtml.appendChild(mapText);
   const clearingList = document.createElement("ol");
   map.clearings.forEach(clearing => {
