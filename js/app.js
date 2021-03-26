@@ -27,6 +27,15 @@ function populatePlayerListHtml() {
   });
 }
 
+function clearPlayers(event) {
+  event.preventDefault();
+
+  State.playerList = [];
+  savePlayersLocally();
+
+  populatePlayerListHtml();
+}
+
 function addPlayer(event) {
   event.preventDefault();
 
