@@ -133,15 +133,53 @@ function randomizeGame() {
   }
 }
 
+function getIconPath(faction) {
+  var iconName = "";
+  switch (faction) {
+    case DATA.FACTIONS.MARQUISE_DE_CAT:
+      iconName = "faction-marquise";
+      break;
+    case DATA.FACTIONS.UNDERGROUND_DUCHY:
+      iconName = "faction-duchy";
+      break;
+    case DATA.FACTIONS.EYRIE_DYNASTIES:
+      iconName = "faction-eyrie";
+      break;
+    case DATA.FACTIONS.VAGABOND_1:
+      iconName = "faction-vagabond";
+      break;
+    case DATA.FACTIONS.RIVERFOLK_COMPANY:
+      iconName = "faction-riverfolk";
+      break;
+    case DATA.FACTIONS.WOODLAND_ALLIANCE:
+      iconName = "faction-woodland";
+      break;
+    case DATA.FACTIONS.CORVID_CONSPIRACY:
+      iconName = "faction-corvid";
+      break;
+    case DATA.FACTIONS.VAGABOND_2:
+      iconName = "faction-vagabond-2";
+      break;
+    case DATA.FACTIONS.LIZARD_CULTs:
+      iconName = "faction-cult";
+      break;
+  }
+
+  return iconName ? `./icons/${iconName}.png` : "";
+}
+
 function getSeatListHtml(seats) {
   const seatList = document.createElement("ul");
-  var seatIndex = 1;
+  seatList.setAttribute("class", "seat-list");
+
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const firstPlayerText = seatIndex === 1 ? `, going first` : ``;
-    seatListItem.innerHTML = `In seat ${seatIndex}, <b>${seat.player}</b> will play <b>${seat.faction.name}</b>${firstPlayerText}.`;
+    const iconPath = getIconPath(seat.faction);
+    console.log(iconPath);
+    const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
+    console.log(icon);
+    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
-    seatIndex++;
   });
   return seatList;
 }
