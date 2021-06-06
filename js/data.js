@@ -1,40 +1,49 @@
 const _FACTIONS = {
   MARQUISE_DE_CAT: {
     name: "Marquise de Cat",
-    reach: 10
+    reach: 10,
+    iconName: "faction-marquise"
   },
   UNDERGROUND_DUCHY: {
     name: "The Underground Duchy",
-    reach: 8
+    reach: 8,
+    iconName: "faction-duchy"
   },
   EYRIE_DYNASTIES: {
     name: "The Eyrie Dynasties",
-    reach: 7
+    reach: 7,
+    iconName: "faction-eyrie"
   },
   VAGABOND_1: {
     name: "The Vagabond",
-    reach: 5
+    reach: 5,
+    iconName: "faction-vagabond"
   },
   RIVERFOLK_COMPANY: {
     name: "The Riverfolk Company",
-    reach: 5
+    reach: 5,
+    iconName: "faction-riverfolk"
   },
   WOODLAND_ALLIANCE: {
     name: "The Woodland Alliance",
-    reach: 3
+    reach: 3,
+    iconName: "faction-woodland"
   },
   CORVID_CONSPIRACY: {
     name: "The Corvid Conspiracy",
-    reach: 3
+    reach: 3,
+    iconName: "faction-corvid"
   },
   VAGABOND_2: {
     name: "The Vagabond, Jr.",
     reach: 2,
+    iconName: "faction-vagabond-2",
     onlyPresentWith: ["VAGABOND_1"]
   },
   LIZARD_CULT: {
     name: "The Lizard Cult",
-    reach: 2
+    reach: 2,
+    iconName: "faction-cult"
   }
 }
 
