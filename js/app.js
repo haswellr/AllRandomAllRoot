@@ -155,13 +155,14 @@ function randomizeGame() {
 
 function getSeatListHtml(seats) {
   const seatList = document.createElement("ul");
-  var seatIndex = 1;
+  seatList.setAttribute("class", "seat-list");
+
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const firstPlayerText = seatIndex === 1 ? `, going first` : ``;
-    seatListItem.innerHTML = `In seat ${seatIndex}, <b>${seat.player}</b> will play <b>${seat.faction.name}</b>${firstPlayerText}.`;
+    const iconPath = `./icons/${seat.faction.iconName}.png`;
+    const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
+    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
-    seatIndex++;
   });
   return seatList;
 }
