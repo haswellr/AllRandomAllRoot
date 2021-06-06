@@ -20,11 +20,31 @@ function populatePlayerListHtml() {
   while(playerList.firstChild) {
     playerList.removeChild(playerList.firstChild);
   }
-  State.playerList.forEach(playerName => {    
+  State.playerList.forEach((playerName, index) => {
     const newPlayerListItem = document.createElement("li");
     newPlayerListItem.appendChild(document.createTextNode(playerName));
+
+    const button = document.createElement("button");
+    button.setAttribute("index", index.toString());
+    button.innerHTML = "remove";
+    button.addEventListener("click", clearPlayer);
+    newPlayerListItem.appendChild(button);
+
     playerList.appendChild(newPlayerListItem);
   });
+}
+
+function clearPlayer(event) {
+  const index = event.srcElement.getAttribute("index");
+  if (index === undefined || index >= State.playerList.length) {
+    console.error("clearPlayer() called on element with bad index.")
+    return;
+  }
+
+  State.playerList.splice(index, 1);
+  savePlayersLocally();
+
+  populatePlayerListHtml();
 }
 
 function clearPlayers(event) {
