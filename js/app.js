@@ -26,6 +26,7 @@ function populatePlayerListHtml() {
 
     const button = document.createElement("button");
     button.setAttribute("index", index.toString());
+    button.setAttribute("class", "button");
     button.innerHTML = "remove";
     button.addEventListener("click", clearPlayer);
     newPlayerListItem.appendChild(button);

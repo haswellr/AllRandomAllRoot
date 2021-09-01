@@ -1,0 +1,51 @@
+body {
+  font-family: 'Roboto', serif;
+ }
+
+div.main {
+	margin: 15%;
+}
+
+ul {
+	list-style-type: none;
+}
+
+.player-list {
+	padding: 0px;
+}
+
+.entry-form {
+	max-width: 580px;
+  padding: 1rem;
+  position: relative;
+  background: linear-gradient(to right,#cf2d38,#fbe254,#da8355,#55b0a8 );
+  padding: 3px;
+  border-radius: 16px;
+}
+
+.entry-form-body {
+  margin: 0;
+	display: grid;
+  place-items: center;
+  background: white;
+  border-radius: 16px;
+}
+
+.submissions {
+	display: inline-flex;
+}
+
+.button {
+	padding: 4px;
+	margin: 4px 16px;
+	display: inline-block;
+}
+
+
+
+/*
+red #cf2d38
+yellow #fbe254
+orange #da8355
+blue #55b0a8 */
+
