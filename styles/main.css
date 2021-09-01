@@ -1,13 +1,21 @@
 body {
   font-family: 'Roboto', serif;
+  background-image: url('../icons/root_character_vagabond_racoon.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: .85;
  }
 
 div.main {
-	margin: 15%;
+	margin: 2em;
 }
 
 ul {
 	list-style-type: none;
+}
+
+.seat-list li {
+  list-style-type: decimal;
 }
 
 .player-list {
@@ -16,19 +24,25 @@ ul {
 
 .entry-form {
 	max-width: 580px;
-  padding: 1rem;
+  padding: .2rem;
   position: relative;
-  background: linear-gradient(to right,#cf2d38,#fbe254,#da8355,#55b0a8 );
   padding: 3px;
   border-radius: 16px;
+  background: #da8355;
 }
 
 .entry-form-body {
   margin: 0;
 	display: grid;
   place-items: center;
-  background: white;
+  
+}
+
+.content-box {
+  background: #fff;
   border-radius: 16px;
+  padding: 1em;
+  margin: 1em;
 }
 
 .submissions {
@@ -36,16 +50,8 @@ ul {
 }
 
 .button {
-	padding: 4px;
-	margin: 4px 16px;
+	padding: .25em;
+	margin: .25em 1em;
 	display: inline-block;
 }
-
-
-
-/*
-red #cf2d38
-yellow #fbe254
-orange #da8355
-blue #55b0a8 */
 
