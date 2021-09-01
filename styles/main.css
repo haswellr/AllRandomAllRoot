@@ -1,5 +1,9 @@
 body {
   font-family: 'Roboto', serif;
+  background-image: url('../icons/root_character_vagabond_racoon.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: .85;
  }
 
 div.main {
@@ -27,6 +31,10 @@ ul {
   margin: 0;
 	display: grid;
   place-items: center;
+  
+}
+
+.content-box {
   background: white;
   border-radius: 16px;
 }
@@ -40,7 +48,6 @@ ul {
 	margin: 4px 16px;
 	display: inline-block;
 }
-
 
 
 /*
