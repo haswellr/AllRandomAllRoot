@@ -60,10 +60,15 @@ function addPlayer(event) {
   event.preventDefault();
 
   const playerName = document.getElementById("playerNameInput").value;
+  if (playerName === "") {
+    return;
+  }
+
   State.playerList.push(playerName);
   savePlayersLocally();
 
   populatePlayerListHtml();
+  document.getElementById("playerNameInput").value = "";
 }
 
 function canFactionBePicked(faction, selectedFactions) {
@@ -79,7 +84,6 @@ function canFactionBePicked(faction, selectedFactions) {
 function randomizeFactions() {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
   const numPlayers = State.playerList.length;
-  const players = Array.from(State.playerList);
   const minReach = DATA.REACH_BY_PLAYER_COUNT[numPlayers];
   var currentReach = 0;
   const selectedFactions = [];
