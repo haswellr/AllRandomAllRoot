@@ -49,19 +49,27 @@ const _FACTIONS = {
 
 const _MAPS = {
   WOODLAND: {
-    name: "Woodland",
+    name: "Fall",
+    alt: "The Fall Root map.",
+    fileName: "fall.png",
     numClearings: 12
   },
   WINTER: {
     name: "Winter",
+    alt: "The Winter Root map.",
+    fileName: "winter.png",
     numClearings: 12
   },
   LAKE: {
     name: "Lake",
+    alt: "The Lake Root map.",
+    fileName: "lake.png",
     numClearings: 12
   },
   MOUNTAIN: {
     name: "Mountain",
+    alt: "The Mountain Root map.",
+    fileName: "mountain.png",
     numClearings: 12
   }
 }
@@ -69,15 +77,18 @@ const _MAPS = {
 const _CLEARING_TYPES = {
   FOX: {
     name: "Fox",
-    color: "#FF0000"
+    color: "#FF0000",
+    iconName: "card-fox"
   },
   MOUSE: {
     name: "Mouse",
-    color: "#FF8C00"
+    color: "#FF8C00",
+    iconName: "card-mouse"
   },
   RABBIT: {
     name: "Rabbit",
-    color: "#FFCC00"
+    color: "#FFCC00",
+    iconName: "card-bunny"
   }
 }
 

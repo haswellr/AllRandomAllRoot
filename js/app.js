@@ -126,14 +126,13 @@ function randomizeClearings(gameMap) {
   return availableClearings
     .map(clearing => ({ sortIndex: Math.random(), value: clearing }))
     .sort((a, b) => a.sortIndex - b.sortIndex)
-    .map(sortableClearing => sortableClearing.value)
-    .splice(0, gameMap.numClearings);
+    .map(sortableClearing => sortableClearing.value);
 }
 
 function randomizeMap() {
   const map = DATA.MAP_LIST[Math.floor(Math.random() * DATA.MAP_LIST.length)];
   return {
-    name: map.name,
+    ...map,
     clearings: randomizeClearings(map)
   }
 }
@@ -171,6 +170,28 @@ function getSeatListHtml(seats) {
   return seatList;
 }
 
+function createMapImageOverlay(map) {
+  const wrapper = document.createElement("div");
+  wrapper.classList.add("mapWrapper");
+
+  const backgroundMap = document.createElement("img");
+  backgroundMap.classList.add("backgroundMap");
+  backgroundMap.setAttribute('alt', map.alt);
+  backgroundMap.setAttribute('src', `./maps/${map.fileName}`);
+  wrapper.appendChild(backgroundMap);
+
+  map.clearings.forEach((clearing, index) => {
+    const clearingIcon = document.createElement("img");
+    clearingIcon.classList.add('clearingIcon');
+    clearingIcon.classList.add(`${map.name}-pos${index}`);
+    clearingIcon.setAttribute('alt', `A ${clearing.name} clearing - in ${index} position.`);
+    clearingIcon.setAttribute('src', `./icons/${clearing.iconName}.png`);
+    wrapper.appendChild(clearingIcon);
+  })
+
+  return wrapper;
+}
+
 function getMapHtml(map) {
   const mapHtml = document.createElement("div");
   const mapText = document.createElement("span");
@@ -184,6 +205,10 @@ function getMapHtml(map) {
     clearingList.appendChild(clearingItem);
   });
   mapHtml.append(clearingList);
+
+  const overlayElement = createMapImageOverlay(map);
+  mapHtml.appendChild(overlayElement);
+
   return mapHtml;
 }
 
