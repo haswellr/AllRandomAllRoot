@@ -132,7 +132,9 @@ function randomizeClearings(gameMap) {
 function randomizeMap() {
   const map = DATA.MAP_LIST[Math.floor(Math.random() * DATA.MAP_LIST.length)];
   return {
-    ...map,
+    name: map.name,
+    alt: map.alt,
+    imageFileName: map.imageFileName,
     clearings: randomizeClearings(map)
   }
 }
