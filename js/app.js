@@ -194,7 +194,7 @@ function createMapImageOverlay(map) {
   })
 
   // Update the background with the finalized alt text.
-  let mapAltText = `${map.alt}. Overlaid with randomly ordered clearings.`;
+  let mapAltText = `${map.alt}\nOverlaid with randomly ordered clearings.`;
   clearingAltTexts.forEach((clearingAlt) => {
     mapAltText += `\n${clearingAlt}`;
   });
