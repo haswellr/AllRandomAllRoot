@@ -162,7 +162,7 @@ function getSeatListHtml(seats) {
 
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const iconPath = `./icons/${seat.faction.iconName}.png`;
+    const iconPath = `./icons/${seat.faction.iconFileName}`;
     const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
     seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
@@ -185,7 +185,7 @@ function createMapImageOverlay(map) {
     const clearingIcon = document.createElement("img");
     clearingIcon.classList.add("clearingIcon");
     clearingIcon.classList.add(`${map.name}-pos${index}`);
-    clearingIcon.setAttribute("src", `./icons/${clearing.iconName}.png`);
+    clearingIcon.setAttribute("src", `./icons/${clearing.iconFileName}`);
     const clearingAltText = `Position ${index}: ${clearing.name} clearing.`;
     clearingIcon.setAttribute("alt", clearingAltText);
 

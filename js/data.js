@@ -2,48 +2,48 @@ const _FACTIONS = {
   MARQUISE_DE_CAT: {
     name: "Marquise de Cat",
     reach: 10,
-    iconName: "faction-marquise"
+    iconFileName: "faction-marquise.png"
   },
   UNDERGROUND_DUCHY: {
     name: "The Underground Duchy",
     reach: 8,
-    iconName: "faction-duchy"
+    iconFileName: "faction-duchy.png"
   },
   EYRIE_DYNASTIES: {
     name: "The Eyrie Dynasties",
     reach: 7,
-    iconName: "faction-eyrie"
+    iconFileName: "faction-eyrie.png"
   },
   VAGABOND_1: {
     name: "The Vagabond",
     reach: 5,
-    iconName: "faction-vagabond"
+    iconFileName: "faction-vagabond.png"
   },
   RIVERFOLK_COMPANY: {
     name: "The Riverfolk Company",
     reach: 5,
-    iconName: "faction-riverfolk"
+    iconFileName: "faction-riverfolk.png"
   },
   WOODLAND_ALLIANCE: {
     name: "The Woodland Alliance",
     reach: 3,
-    iconName: "faction-woodland"
+    iconFileName: "faction-woodland.png"
   },
   CORVID_CONSPIRACY: {
     name: "The Corvid Conspiracy",
     reach: 3,
-    iconName: "faction-corvid"
+    iconFileName: "faction-corvid.png"
   },
   VAGABOND_2: {
     name: "The Vagabond, Jr.",
     reach: 2,
-    iconName: "faction-vagabond-2",
+    iconFileName: "faction-vagabond-2.png",
     onlyPresentWith: ["VAGABOND_1"]
   },
   LIZARD_CULT: {
     name: "The Lizard Cult",
     reach: 2,
-    iconName: "faction-cult"
+    iconFileName: "faction-cult.png"
   }
 }
 
@@ -78,17 +78,17 @@ const _CLEARING_TYPES = {
   FOX: {
     name: "Fox",
     color: "#FF0000",
-    iconName: "card-fox"
+    iconFileName: "card-fox.png"
   },
   MOUSE: {
     name: "Mouse",
     color: "#FF8C00",
-    iconName: "card-mouse"
+    iconFileName: "card-mouse.png"
   },
   RABBIT: {
     name: "Rabbit",
     color: "#FFCC00",
-    iconName: "card-bunny"
+    iconFileName: "card-bunny.png"
   }
 }
 
