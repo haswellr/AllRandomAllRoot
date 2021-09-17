@@ -77,17 +77,14 @@ const _MAPS = {
 const _CLEARING_TYPES = {
   FOX: {
     name: "Fox",
-    color: "#FF0000",
     iconFileName: "card-fox.png"
   },
   MOUSE: {
     name: "Mouse",
-    color: "#FF8C00",
     iconFileName: "card-mouse.png"
   },
   RABBIT: {
     name: "Rabbit",
-    color: "#FFCC00",
     iconFileName: "card-bunny.png"
   }
 }
