@@ -51,25 +51,25 @@ const _MAPS = {
   WOODLAND: {
     name: "Fall",
     alt: "The Fall Root map.",
-    fileName: "fall.png",
+    imageFileName: "fall.png",
     numClearings: 12
   },
   WINTER: {
     name: "Winter",
     alt: "The Winter Root map",
-    fileName: "winter.png",
+    imageFileName: "winter.png",
     numClearings: 12
   },
   LAKE: {
     name: "Lake",
     alt: "The Lake Root map",
-    fileName: "lake.png",
+    imageFileName: "lake.png",
     numClearings: 12
   },
   MOUNTAIN: {
     name: "Mountain",
     alt: "The Mountain Root map",
-    fileName: "mountain.png",
+    imageFileName: "mountain.png",
     numClearings: 12
   }
 }

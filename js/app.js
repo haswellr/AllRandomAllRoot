@@ -176,7 +176,7 @@ function createMapImageOverlay(map) {
 
   const backgroundMap = document.createElement("img");
   backgroundMap.classList.add("backgroundMap");
-  backgroundMap.setAttribute("src", `./maps/${map.fileName}`);
+  backgroundMap.setAttribute("src", `./maps/${map.imageFileName}`);
   wrapper.appendChild(backgroundMap);
 
   // Build the individual clearing elements and capture alt text.
