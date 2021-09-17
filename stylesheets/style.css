@@ -1,0 +1,21 @@
+@import "maps.css";
+
+ul.seat-list {
+    list-style-type: decimal
+}
+
+.mapWrapper {
+    position: relative;
+}
+
+.backgroundMap {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.clearingIcon {
+    position: absolute;
+    height: 84px;
+    width: 84px;
+}
