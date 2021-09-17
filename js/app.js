@@ -170,7 +170,7 @@ function getSeatListHtml(seats) {
   return seatList;
 }
 
-function createMapImageOverlay(map) {
+function getMapImageOverlayHtml(map) {
   const wrapper = document.createElement("div");
   wrapper.classList.add("mapWrapper");
 
@@ -209,7 +209,7 @@ function getMapHtml(map) {
   mapText.innerHTML = `The game will be played on the <b>${map.name}</b> map:`;
   mapHtml.appendChild(mapText);
 
-  const overlayElement = createMapImageOverlay(map);
+  const overlayElement = getMapImageOverlayHtml(map);
   mapHtml.appendChild(overlayElement);
 
   return mapHtml;
