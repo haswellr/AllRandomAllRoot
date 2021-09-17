@@ -1,0 +1,245 @@
+/* This file captures styling information for placement and overlay of the map. */
+
+/* Fall */
+.Fall-pos0 {
+    top: 11px;
+    left: 13px;
+}
+
+.Fall-pos1 {
+    top: 18px;
+    left: 228px;
+}
+
+.Fall-pos2 {
+    top: 83px;
+    left: 153px;
+}
+
+.Fall-pos3 {
+    top: 85px;
+    left: 354px;
+}
+
+.Fall-pos4 {
+    top: 130px;
+    left: 13px;
+}
+
+.Fall-pos5 {
+    top: 220px;
+    left: 120px;
+}
+
+.Fall-pos6 {
+    top: 188px;
+    left: 260px;
+}
+
+.Fall-pos7 {
+    top: 200px;
+    left: 365px;
+}
+
+.Fall-pos8 {
+    top: 315px;
+    left: 10px;
+}
+
+.Fall-pos9 {
+    top: 360px;
+    left: 133px;
+}
+
+.Fall-pos10 {
+    top: 315px;
+    left: 245px;
+}
+
+.Fall-pos11 {
+    top: 360px;
+    left: 357px;
+}
+
+/* Winter */
+.Winter-pos0 {
+    top: 7px;
+    left: 13px;
+}
+
+.Winter-pos1 {
+    top: 15px;
+    left: 137px;
+}
+
+.Winter-pos2 {
+    top: 33px;
+    left: 243px;
+}
+
+.Winter-pos3 {
+    top: 2px;
+    left: 366px;
+}
+
+.Winter-pos4 {
+    top: 156px;
+    left: 7px;
+}
+
+.Winter-pos5 {
+    top: 164px;
+    left: 143px;
+}
+
+.Winter-pos6 {
+    top: 170px;
+    left: 265px;
+}
+
+.Winter-pos7 {
+    top: 181px;
+    left: 371px;
+}
+
+.Winter-pos8 {
+    top: 304px;
+    left: 17px;
+}
+
+.Winter-pos9 {
+    top: 344px;
+    left: 145px;
+}
+
+.Winter-pos10 {
+    top: 297px;
+    left: 252px;
+}
+
+.Winter-pos11 {
+    top: 339px;
+    left: 367px;
+}
+
+/* Mountain */
+.Mountain-pos0 {
+    top: 10px;
+    left: 18px;
+}
+
+.Mountain-pos1 {
+    top: 23px;
+    left: 233px;
+}
+
+.Mountain-pos2 {
+    top: 15px;
+    left: 373px;
+}
+
+.Mountain-pos3 {
+    top: 167px;
+    left: 13px;
+}
+
+.Mountain-pos4 {
+    top: 128px;
+    left: 119px;
+}
+
+.Mountain-pos5 {
+    top: 143px;
+    left: 209px;
+}
+
+.Mountain-pos6 {
+    top: 231px;
+    left: 126px;
+}
+
+.Mountain-pos7 {
+    top: 236px;
+    left: 260px;
+}
+
+.Mountain-pos8 {
+    top: 195px;
+    left: 378px;
+}
+
+.Mountain-pos9 {
+    top: 318px;
+    left: 22px;
+}
+
+.Mountain-pos10 {
+    top: 357px;
+    left: 193px;
+}
+
+.Mountain-pos11 {
+    top: 360px;
+    left: 375px;
+}
+
+/* Lake */
+.Lake-pos0 {
+    top: 8px;
+    left: 20px;
+}
+
+.Lake-pos1 {
+    top: 15px;
+    left: 165px;
+}
+
+.Lake-pos2 {
+    top: 34px;
+    left: 270px;
+}
+
+.Lake-pos3 {
+    top: 5px;
+    left: 375px;
+}
+
+.Lake-pos4 {
+    top: 160px;
+    left: 14px;
+}
+
+.Lake-pos5 {
+    top: 137px;
+    left: 136px;
+}
+
+.Lake-pos6 {
+    top: 173px;
+    left: 270px;
+}
+
+.Lake-pos7 {
+    top: 183px;
+    left: 376px;
+}
+
+.Lake-pos8 {
+    top: 312px;
+    left: 22px;
+}
+
+.Lake-pos9 {
+    top: 264px;
+    left: 154px;
+}
+
+.Lake-pos10 {
+    top: 348px;
+    left: 234px;
+}
+
+.Lake-pos11 {
+    top: 324px;
+    left: 357px;
+}
