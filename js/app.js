@@ -126,7 +126,8 @@ function randomizeClearings(gameMap) {
   return availableClearings
     .map(clearing => ({ sortIndex: Math.random(), value: clearing }))
     .sort((a, b) => a.sortIndex - b.sortIndex)
-    .map(sortableClearing => sortableClearing.value);
+    .map(sortableClearing => sortableClearing.value)
+    .splice(0, gameMap.numClearings);
 }
 
 function randomizeMap() {
