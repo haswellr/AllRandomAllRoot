@@ -1,5 +1,9 @@
 @import "maps.css";
 
+body {
+    font-family: 'Libre Baskerville', serif;
+}
+
 ul.seat-list {
     list-style-type: decimal
 }
