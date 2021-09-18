@@ -1,7 +1,16 @@
 @import "maps.css";
+@import "fonts.css"
 
 body {
     font-family: 'Libre Baskerville', serif;
+}
+
+h1 {
+	font-family: 'Luminari';
+}
+
+h2 {
+	font-family: 'Luminari'
 }
 
 ul.seat-list {
