@@ -1,5 +1,4 @@
 @import "maps.css";
-@import "fonts.css"
 
 body {
    font-family: 'Libre Baskerville', serif;
@@ -11,14 +10,6 @@ div.main {
 
 ul {
 	list-style-type: none;
-}
-
-h1 {
-	font-family: 'Luminari';
-}
-
-h2 {
-	font-family: 'Luminari'
 }
 
 ul.seat-list {
