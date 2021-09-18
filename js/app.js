@@ -22,13 +22,15 @@ function populatePlayerListHtml() {
   }
   State.playerList.forEach((playerName, index) => {
     const newPlayerListItem = document.createElement("li");
-    newPlayerListItem.appendChild(document.createTextNode(playerName));
 
     const button = document.createElement("button");
     button.setAttribute("index", index.toString());
-    button.innerHTML = "remove";
+    button.setAttribute("class", "button");
+    button.innerHTML = "X";
     button.addEventListener("click", clearPlayer);
     newPlayerListItem.appendChild(button);
+
+    newPlayerListItem.appendChild(document.createTextNode(playerName));
 
     playerList.appendChild(newPlayerListItem);
   });

@@ -5,38 +5,47 @@
   <title>All Random All Root</title>
   <meta name="description" content="All Random All Root">
   <meta name="author" content="Ryan Haswell">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Roboto">
   <link rel='stylesheet' href="./stylesheets/style.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Libre+Baskerville">
 </head>
 
 <body>
-  <h1>ALL RANDOM ALL ROOT</h1>
+  <div class="main">
+    <h1>ALL RANDOM ALL ROOT</h1>
 
-  <h4>Enter your parameters below, or die</h4>
+    <div class="entry-form">
+      <div class="entry-form-body content-box" >
+        <h4>Enter your parameters below, or die</h4>
 
-  <div>
-    <h5>Players:</h5>
-    <ul id="playerList">
-    </ul>
+        <form onSubmit="addPlayer(event)">
+          <label for="playerNameInput">Player Name:</label>
+          <input id="playerNameInput" name="name">
+          <input type="submit" value="Add Player" class="button">
+        </form>
+
+        <div class="submissions">
+          <form onSubmit="clearPlayers(event)">
+            <input type="submit" value="Clear Players" class="button primary">
+          </form>
+
+          <form onSubmit="generateGame(event)">
+            <input type="submit" value="Randomize" class="button secondary">
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="content-box">
+      <h2>PLAYERS</h2>
+      <ul id="playerList" class="player-list"></ul>
+    </div>
+
+    <div id="output" class="content-box"></div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
   </div>
-
-  <form onSubmit="addPlayer(event)">
-    <label for="playerNameInput">Player Name:</label>
-    <input id="playerNameInput" name="name">
-    <input type="submit" value="Add Player">
-  </form>
-
-  <form onSubmit="clearPlayers(event)">
-    <input type="submit" value="Clear Players">
-  </form>
-
-  <form onSubmit="generateGame(event)">
-    <input type="submit" value="Randomize">
-  </form>
-
-  <div id="output"></div>
-
-  <script src="js/data.js"></script>
-  <script src="js/app.js"></script>
 </body>
 </html>
