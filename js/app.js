@@ -83,23 +83,23 @@ function canFactionBePicked(faction, selectedFactions) {
   return true;
 }
 
-function randomizeFactions() {
-  const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
-  const humanPlayers = State.playerList.length;
-  const useBot = document.getElementById("use-bot")
+function randomizeBotPlayers() {
+  // Totally 100% randomly selected
+  const botPlayers = [DATA.BOT_PLAYERS.MECHANICAL_MARQUISE];
+  return botPlayers;
+}
 
-  if(humanPlayers == 1) {
-    useBot.checked = true;
+function randomizeFactions(numRandomFactions, chosenFactions) {
+  const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
+  const numFactions = numRandomFactions + chosenFactions.length;
+  if(numFactions <= 1) {
+    throw "Insufficient player count.";
   }
-  const numPlayers = (useBot.checked ? humanPlayers+1 : humanPlayers);
-  if(numPlayers == 0) {
-    throw "The game can't play itself!";
-  }
-  else if(numPlayers > availableFactions.length) {
+  else if(numFactions > availableFactions.length) {
     throw "Not enough available factions for this player count.";
   }
 
-  const minReach = DATA.REACH_BY_PLAYER_COUNT[numPlayers];
+  const minReach = DATA.REACH_BY_PLAYER_COUNT[numFactions];
   var currentReach = 0;
   const selectedFactions = [];
 
@@ -109,14 +109,12 @@ function randomizeFactions() {
     currentReach += faction.reach;
   }
 
-  if (useBot.checked) {
-    selectFaction(DATA.FACTIONS.MARQUISE_DE_CAT);
-  }
+  chosenFactions.forEach(faction => selectFaction(faction));
 
-  for(var i = 0; i < humanPlayers; i++) {
+  for(var i = 0; i < numRandomFactions; i++) {
     // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
     //  determining the minimum reach that the last faction could have to still hit the target reach value.
-    const biggestCombinationStartIndex = availableFactions.length - (numPlayers - 1 - selectedFactions.length);
+    const biggestCombinationStartIndex = availableFactions.length - (numFactions - 1 - selectedFactions.length);
     const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => faction.reach).reduce((total, reach) => total += reach, 0);
     // Drop any factions from the list that would no longer allow us to hit the target reach
     while (availableFactions.length > 0 && availableFactions[0].reach < minimumFactionReach) {
@@ -160,12 +158,15 @@ function randomizeMap() {
 
 function randomizePlayerSetup() {
   const players = Array.from(State.playerList);
-  const factions = randomizeFactions();
+  const useBot = document.getElementById("use-bot").checked;
+  const botPlayers = (useBot ? randomizeBotPlayers() : []);
+  const botFactions = botPlayers.map(bot => bot.faction) ?? [];
+  const factions = randomizeFactions(players.length, botFactions);
   const setup = [];
-  if (document.getElementById("use-bot").checked) {
-    setup.push(DATA.BOT_PLAYERS.MECHANICAL_MARQUISE);
-    factions.splice(0,1);
-  }
+  botPlayers.forEach(botPlayer => {
+    setup.push(botPlayer);
+    factions.splice(factions.indexOf(botPlayer.faction), 1);
+  })
   // randomly assign factions to players
   return setup.concat(players.map(player => ({
       player: player,
