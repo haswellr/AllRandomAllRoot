@@ -89,10 +89,26 @@ const _CLEARING_TYPES = {
   }
 }
 
-const _PLAYERS = {
+const _BOT_PLAYERS = {
   MECHANICAL_MARQUISE: {
       player: "The Mechanical Marquise",
-      faction: _FACTIONS.MARQUISE_DE_CAT
+      faction: _FACTIONS.MARQUISE_DE_CAT,
+      iconFileName: "faction-marquise-bot.png"
+  },
+  ELECTRICAL_EYRIE: {
+    player: "The Electrical Eyrie",
+    faction: _FACTIONS.EYRIE_DYNASTIES,
+    iconFileName: "faction-eyrie-bot.png"
+  },
+  AUTOMATED_ALLIANCE:{
+    player: "The Automated Alliance",
+    faction: _FACTIONS.WOODLAND_ALLIANCE,
+    iconFileName: "faction-woodland-bot.png"
+  },
+  VAGABOT: {
+    player: "The Vagabot",
+    faction: _FACTIONS.VAGABOND_1,
+    iconFileName: "faction-vagabond-bot.png"
   }
 }
 
@@ -113,7 +129,7 @@ const DATA = {
   MAP_LIST: Object.keys(_MAPS).map(mapKey => _MAPS[mapKey]),
   CLEARING_TYPES: _CLEARING_TYPES,
   CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey]),
-  PLAYERS: _PLAYERS
+  BOT_PLAYERS: _BOT_PLAYERS
 }
 
 console.log("-- DATA --")

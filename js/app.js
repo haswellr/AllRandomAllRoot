@@ -163,7 +163,7 @@ function randomizePlayerSetup() {
   const factions = randomizeFactions();
   const setup = [];
   if (document.getElementById("use-bot").checked) {
-    setup.push(DATA.PLAYERS.MECHANICAL_MARQUISE);
+    setup.push(DATA.BOT_PLAYERS.MECHANICAL_MARQUISE);
     factions.splice(0,1);
   }
   // randomly assign factions to players
@@ -188,7 +188,8 @@ function getSeatListHtml(seats) {
 
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const iconPath = `./icons/${seat.faction.iconFileName}`;
+    const iconFileName = seat.iconFileName ?? seat.faction.iconFileName;
+    const iconPath = `./icons/${iconFileName}`;
     const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
     seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
