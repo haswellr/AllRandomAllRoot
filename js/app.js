@@ -85,16 +85,35 @@ function canFactionBePicked(faction, selectedFactions) {
 
 function randomizeFactions() {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
-  const numPlayers = State.playerList.length;
+  const humanPlayers = State.playerList.length;
+  const useBot = document.getElementById("use-bot")
+
+  if(humanPlayers == 1) {
+    useBot.checked = true;
+  }
+  const numPlayers = (useBot.checked ? humanPlayers+1 : humanPlayers);
+  if(numPlayers == 0) {
+    throw "The game can't play itself!";
+  }
+  else if(numPlayers > availableFactions.length) {
+    throw "Not enough available factions for this player count.";
+  }
+
   const minReach = DATA.REACH_BY_PLAYER_COUNT[numPlayers];
   var currentReach = 0;
   const selectedFactions = [];
 
-  if(numPlayers > availableFactions.length) {
-    throw "Not enough available factions for this player count.";
+  function selectFaction(faction) {
+    selectedFactions.push(faction);
+    availableFactions.splice(availableFactions.indexOf(faction), 1);
+    currentReach += faction.reach;
   }
 
-  for(var i = 0; i < numPlayers; i++) {
+  if (useBot.checked) {
+    selectFaction(DATA.FACTIONS.MARQUISE_DE_CAT);
+  }
+
+  for(var i = 0; i < humanPlayers; i++) {
     // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
     //  determining the minimum reach that the last faction could have to still hit the target reach value.
     const biggestCombinationStartIndex = availableFactions.length - (numPlayers - 1 - selectedFactions.length);
@@ -110,10 +129,7 @@ function randomizeFactions() {
     const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions));
     const pickableFactionIndex = Math.floor(Math.random() * pickableFactions.length);
     const faction = pickableFactions[pickableFactionIndex];
-    selectedFactions.push(faction);
-    const availableFactionsIndex = availableFactions.indexOf(faction);
-    availableFactions.splice(availableFactionsIndex, 1);
-    currentReach += faction.reach;
+    selectFaction(faction);
   }
 
   return selectedFactions;
