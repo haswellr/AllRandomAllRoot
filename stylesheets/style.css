@@ -49,7 +49,6 @@ ul.seat-list {
   margin: 0;
   display: grid;
   place-items: center;
-  
 }
 
 .content-box {
@@ -61,6 +60,10 @@ ul.seat-list {
 
 .submissions {
 	display: inline-flex;
+}
+
+.options {
+  font-size: smaller;
 }
 
 .button {
