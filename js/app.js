@@ -161,11 +161,16 @@ function randomizeMap() {
 function randomizePlayerSetup() {
   const players = Array.from(State.playerList);
   const factions = randomizeFactions();
+  const setup = [];
+  if (document.getElementById("use-bot").checked) {
+    setup.push(DATA.PLAYERS.MECHANICAL_MARQUISE);
+    factions.splice(0,1);
+  }
   // randomly assign factions to players
-  return players.map(player => ({
+  return setup.concat(players.map(player => ({
       player: player,
       faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
-    }));
+    })));
 }
 
 function randomizeGame() {
@@ -256,7 +261,7 @@ function generateGame(event) {
   event.preventDefault();
   State.game = randomizeGame();
   populateGameHtml();
-  console.log(JSON.stringify(State.game, null, 1)); 
+  console.log(JSON.stringify(State.game, null, 1));
 }
 
 loadState();

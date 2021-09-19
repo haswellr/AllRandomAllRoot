@@ -89,6 +89,13 @@ const _CLEARING_TYPES = {
   }
 }
 
+const _PLAYERS = {
+  MECHANICAL_MARQUISE: {
+      player: "The Mechanical Marquise",
+      faction: _FACTIONS.MARQUISE_DE_CAT
+  }
+}
+
 const DATA = {
   FACTIONS: _FACTIONS,
   FACTION_LIST_BY_REACH: Object.keys(_FACTIONS).map(factionKey => _FACTIONS[factionKey]).sort((a, b) => a.reach - b.reach),
@@ -105,7 +112,8 @@ const DATA = {
   MAPS: _MAPS,
   MAP_LIST: Object.keys(_MAPS).map(mapKey => _MAPS[mapKey]),
   CLEARING_TYPES: _CLEARING_TYPES,
-  CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey])
+  CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey]),
+  PLAYERS: _PLAYERS
 }
 
 console.log("-- DATA --")
