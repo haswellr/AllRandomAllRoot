@@ -116,7 +116,14 @@ function randomizeFactions() {
     currentReach += faction.reach;
   }
 
-  return selectedFactions;
+  return randomizeArray(selectedFactions);
+}
+
+function randomizeArray(array) {
+  return array
+    .map((element) => ({ sortIndex: Math.random(), payload: element }))
+    .sort((a, b) => a.sortIndex - b.sortIndex)
+    .map((element) => element.payload);
 }
 
 function randomizeClearings(gameMap) {
@@ -125,11 +132,8 @@ function randomizeClearings(gameMap) {
   for (var i = 0; i < numOfEachClearingType; i++) {
     DATA.CLEARING_TYPES_LIST.forEach(clearingType => availableClearings.push(clearingType));
   }
-  return availableClearings
-    .map(clearing => ({ sortIndex: Math.random(), value: clearing }))
-    .sort((a, b) => a.sortIndex - b.sortIndex)
-    .map(sortableClearing => sortableClearing.value)
-    .splice(0, gameMap.numClearings);
+
+  return randomizeArray(availableClearings).splice(0, gameMap.numClearings);
 }
 
 function randomizeMap() {
@@ -145,18 +149,22 @@ function randomizeMap() {
 function randomizePlayerSetup() {
   const players = Array.from(State.playerList);
   const factions = randomizeFactions();
-  // randomly assign factions to players
-  return players.map(player => ({
-      player: player,
-      faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
-    }));
+
+  // Assign a random faction for each player.
+  const playerAssignments = players.map((player, index) => ({
+    player: player,
+    faction: factions[index],
+  }));
+
+  // Randomize the player ordering.
+  return randomizeArray(playerAssignments);
 }
 
 function randomizeGame() {
   const playerSetups = randomizePlayerSetup();
   return {
     tableSize: playerSetups.length,
-    seats: playerSetups.sort(() => Math.random() - 0.5),
+    seats: playerSetups,
     map: randomizeMap()
   }
 }
