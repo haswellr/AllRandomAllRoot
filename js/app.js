@@ -73,7 +73,8 @@ function addPlayer(event) {
   document.getElementById("playerNameInput").value = "";
 }
 
-function canFactionBePicked(faction, selectedFactions) {
+function canFactionBePicked(faction, selectedFactions, forBot) {
+  if (forBot && !isBotFaction(faction)) return false;
   if (faction.onlyPresentWith && faction.onlyPresentWith.length > 0) {
     const requiredFactions = faction.onlyPresentWith.map(presentWith => DATA.FACTIONS[presentWith] || console.error(`Invalid faction in onlyPresentWith for ${faction.name}: ${presentWith}`));
     if (requiredFactions.filter(requiredFaction => selectedFactions.indexOf(requiredFaction) === -1).length > 0) {
@@ -83,15 +84,13 @@ function canFactionBePicked(faction, selectedFactions) {
   return true;
 }
 
-function randomizeBotPlayers() {
-  // Totally 100% randomly selected
-  const botPlayers = [DATA.BOT_PLAYERS.MECHANICAL_MARQUISE];
-  return botPlayers;
+function isBotFaction(faction) {
+  return Object.values(DATA.BOT_PLAYERS).map(bot => bot.faction).includes(faction);
 }
 
-function randomizeFactions(numRandomFactions, chosenFactions) {
+function randomizeFactions(numHumans, numBots, chosenFactions) {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
-  const numFactions = numRandomFactions + chosenFactions.length;
+  const numFactions = numHumans + numBots + chosenFactions.length;
   if(numFactions <= 1) {
     throw "Insufficient player count.";
   }
@@ -109,9 +108,7 @@ function randomizeFactions(numRandomFactions, chosenFactions) {
     currentReach += faction.reach;
   }
 
-  chosenFactions.forEach(faction => selectFaction(faction));
-
-  for(var i = 0; i < numRandomFactions; i++) {
+  function pickReachableFaction(forBot) {
     // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
     //  determining the minimum reach that the last faction could have to still hit the target reach value.
     const biggestCombinationStartIndex = availableFactions.length - (numFactions - 1 - selectedFactions.length);
@@ -124,12 +121,15 @@ function randomizeFactions(numRandomFactions, chosenFactions) {
       throw "There is no combination of available factions which hits the target reach.";
     }
     // Pluck random faction
-    const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions));
+    const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions, forBot));
     const pickableFactionIndex = Math.floor(Math.random() * pickableFactions.length);
     const faction = pickableFactions[pickableFactionIndex];
     selectFaction(faction);
   }
 
+  chosenFactions.forEach(faction => selectFaction(faction));
+  for(var i = 0; i < numBots; i++) pickReachableFaction(true);
+  for(var i = 0; i < numHumans; i++) pickReachableFaction(false);
   return selectedFactions;
 }
 
@@ -156,18 +156,31 @@ function randomizeMap() {
   }
 }
 
+function getBotPlayer(faction) {
+  if (!isBotFaction(faction)) throw "Bots cannot play this faction.";
+  const bots = Object.values(DATA.BOT_PLAYERS);
+  for (let i = 0; i < bots.length; i++) {
+    if (faction == bots[i].faction) return bots[i];
+  }
+}
+
 function randomizePlayerSetup() {
   const players = Array.from(State.playerList);
-  const useBot = document.getElementById("use-bot").checked;
-  const botPlayers = (useBot ? randomizeBotPlayers() : []);
-  const botFactions = botPlayers.map(bot => bot.faction) ?? [];
-  const factions = randomizeFactions(players.length, botFactions);
+  const numBots = + document.getElementById("use-bot").checked;
+  const chosenFactions = [];  // Should pull from state along with bots
+  const factions = randomizeFactions(players.length, numBots, chosenFactions);
   const setup = [];
-  botPlayers.forEach(botPlayer => {
-    setup.push(botPlayer);
-    factions.splice(factions.indexOf(botPlayer.faction), 1);
+  var botsLeft = numBots;
+  // Will want to assign any chosenFactions properly first
+  // Then randomly assign bot factions to all bots
+  factions.forEach(faction => {
+    if (isBotFaction(faction) && botsLeft > 0) {
+      setup.push(getBotPlayer(faction));
+      factions.splice(factions.indexOf(faction), 1);
+      botsLeft--;
+    }
   })
-  // randomly assign factions to players
+  // Randomly assign remaining factions to players
   return setup.concat(players.map(player => ({
       player: player,
       faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
