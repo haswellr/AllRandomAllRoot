@@ -45,7 +45,7 @@ ul.seat-list {
 }
 
 .entry-form-body {
-     margin: 0;
+    margin: 0;
     display: grid;
     place-items: center;
 }
