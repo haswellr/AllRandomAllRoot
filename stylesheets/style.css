@@ -1,70 +1,75 @@
 @import "maps.css";
 
 body {
-   font-family: 'Libre Baskerville', serif;
- }
+    font-family: 'Libre Baskerville', serif;
+}
 
 div.main {
-	margin: 2em;
+    margin: 2em;
 }
 
 ul {
-	list-style-type: none;
+    list-style-type: none;
 }
 
 ul.seat-list {
-  list-style-type: decimal
+    list-style-type: decimal
 }
 
 .mapWrapper {
-  position: relative;
+    position: relative;
 }
 
 .backgroundMap {
-  position: absolute;
-  top: 0;
-  left: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
 }
 
 .clearingIcon {
-  position: absolute;
-  height: 84px;
-  width: 84px;
+    position: absolute;
+    height: 84px;
+    width: 84px;
 }
 
 .player-list {
-	padding: 0px;
+    padding: 0px;
 }
 
 .entry-form {
-  max-width: 580px;
-  padding: .2rem;
-  position: relative;
-  padding: 3px;
-  border-radius: 16px;
-  background: #da8355;
+    max-width: 580px;
+    position: relative;
+    padding: 3px;
+    border-radius: 16px;
+    background: #da8355;
 }
 
 .entry-form-body {
-  margin: 0;
-  display: grid;
-  place-items: center;
-  
+     margin: 0;
+    display: grid;
+    place-items: center;
 }
 
 .content-box {
-  background: #fff;
-  border-radius: 16px;
-  padding: 1em;
-  margin: 0.5em;
+    background: #fff;
+    border-radius: 16px;
+    padding: 1em;
+    margin: 0.5em;
 }
 
 .submissions {
-	display: inline-flex;
+    display: inline-flex;
 }
 
 .button {
-	padding: .25em;
-	margin: .25em 1em;
-	display: inline-block;
+    padding: .25em;
+    margin: .25em 1em;
+    display: inline-block;
+}
+
+.faction-icon {
+    position: relative;
+    top: 8px;
+    width: 32px;
+    height: 32px;
 }

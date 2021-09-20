@@ -168,7 +168,7 @@ function getSeatListHtml(seats) {
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
     const iconPath = `./icons/${seat.faction.iconFileName}`;
-    const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
+    const icon = iconPath ? `<img src=${iconPath} class="faction-icon">` : "";
     seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
   });
