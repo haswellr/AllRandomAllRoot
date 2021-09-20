@@ -92,29 +92,29 @@ const _CLEARING_TYPES = {
 const _BOT_PLAYERS = {
   MECHANICAL_MARQUISE: {
       player: "The Mechanical Marquise",
-      faction: _FACTIONS.MARQUISE_DE_CAT,
+      faction: "MARQUISE_DE_CAT",
       iconFileName: "faction-marquise-bot.png"
   },
   ELECTRICAL_EYRIE: {
     player: "The Electrical Eyrie",
-    faction: _FACTIONS.EYRIE_DYNASTIES,
+    faction: "EYRIE_DYNASTIES",
     iconFileName: "faction-eyrie-bot.png"
   },
   AUTOMATED_ALLIANCE:{
     player: "The Automated Alliance",
-    faction: _FACTIONS.WOODLAND_ALLIANCE,
+    faction: "WOODLAND_ALLIANCE",
     iconFileName: "faction-woodland-bot.png"
   },
   VAGABOT: {
     player: "The Vagabot",
-    faction: _FACTIONS.VAGABOND_1,
+    faction: "VAGABOND_1",
     iconFileName: "faction-vagabond-bot.png"
   }
 }
 
 const DATA = {
   FACTIONS: _FACTIONS,
-  FACTION_LIST_BY_REACH: Object.keys(_FACTIONS).map(factionKey => _FACTIONS[factionKey]).sort((a, b) => a.reach - b.reach),
+  FACTION_LIST_BY_REACH: Object.keys(_FACTIONS).sort((a, b) => _FACTIONS[a].reach - _FACTIONS[b].reach),
   REACH_BY_PLAYER_COUNT: {
     2: 17,
     3: 18,

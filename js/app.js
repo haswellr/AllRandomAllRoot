@@ -75,13 +75,18 @@ function addPlayer(event) {
 
 function canFactionBePicked(faction, selectedFactions, forBot) {
   if (forBot && !isBotFaction(faction)) return false;
-  if (faction.onlyPresentWith && faction.onlyPresentWith.length > 0) {
-    const requiredFactions = faction.onlyPresentWith.map(presentWith => DATA.FACTIONS[presentWith] || console.error(`Invalid faction in onlyPresentWith for ${faction.name}: ${presentWith}`));
+  const factionObj = getFaction(faction);
+  if (factionObj.onlyPresentWith && factionObj.onlyPresentWith.length > 0) {
+    const requiredFactions = factionObj.onlyPresentWith.map(presentWith => presentWith || console.error(`Invalid faction in onlyPresentWith for ${factionObj.name}: ${presentWith}`));
     if (requiredFactions.filter(requiredFaction => selectedFactions.indexOf(requiredFaction) === -1).length > 0) {
       return false;
     }
   }
   return true;
+}
+
+function getFaction(faction) {
+  return DATA.FACTIONS[faction];
 }
 
 function isBotFaction(faction) {
@@ -105,16 +110,16 @@ function randomizeFactions(numHumans, numBots, chosenFactions) {
   function selectFaction(faction) {
     selectedFactions.push(faction);
     availableFactions.splice(availableFactions.indexOf(faction), 1);
-    currentReach += faction.reach;
+    currentReach += getFaction(faction).reach;
   }
 
   function pickReachableFaction(forBot) {
     // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
     //  determining the minimum reach that the last faction could have to still hit the target reach value.
     const biggestCombinationStartIndex = availableFactions.length - (numFactions - 1 - selectedFactions.length);
-    const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => faction.reach).reduce((total, reach) => total += reach, 0);
+    const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => getFaction(faction).reach).reduce((total, reach) => total += reach, 0);
     // Drop any factions from the list that would no longer allow us to hit the target reach
-    while (availableFactions.length > 0 && availableFactions[0].reach < minimumFactionReach) {
+    while (availableFactions.length > 0 && getFaction(availableFactions[0]).reach < minimumFactionReach) {
       availableFactions.splice(0, 1);
     }
     if (availableFactions.length == 0) {
@@ -202,10 +207,11 @@ function getSeatListHtml(seats) {
 
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const iconFileName = seat.iconFileName ?? seat.faction.iconFileName;
+    const factionObj = getFaction(seat.faction);
+    const iconFileName = seat.iconFileName ?? factionObj.iconFileName;
     const iconPath = `./icons/${iconFileName}`;
     const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
-    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
+    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${factionObj.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
   });
   return seatList;
