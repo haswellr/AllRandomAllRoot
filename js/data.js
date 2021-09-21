@@ -89,9 +89,36 @@ const _CLEARING_TYPES = {
   }
 }
 
+const _BOT_PLAYERS = {
+  MECHANICAL_MARQUISE: {
+      name: "The Mechanical Marquise",
+      faction: "MARQUISE_DE_CAT",
+      iconFileName: "faction-marquise-bot.png",
+      bot: true
+  },
+  ELECTRICAL_EYRIE: {
+    name: "The Electrical Eyrie",
+    faction: "EYRIE_DYNASTIES",
+    iconFileName: "faction-eyrie-bot.png",
+    bot: true
+  },
+  AUTOMATED_ALLIANCE:{
+    name: "The Automated Alliance",
+    faction: "WOODLAND_ALLIANCE",
+    iconFileName: "faction-woodland-bot.png",
+    bot: true
+  },
+  VAGABOT: {
+    name: "The Vagabot",
+    faction: "VAGABOND_1",
+    iconFileName: "faction-vagabond-bot.png",
+    bot: true
+  }
+}
+
 const DATA = {
   FACTIONS: _FACTIONS,
-  FACTION_LIST_BY_REACH: Object.keys(_FACTIONS).map(factionKey => _FACTIONS[factionKey]).sort((a, b) => a.reach - b.reach),
+  FACTION_LIST_BY_REACH: Object.keys(_FACTIONS).sort((a, b) => _FACTIONS[a].reach - _FACTIONS[b].reach),
   REACH_BY_PLAYER_COUNT: {
     2: 17,
     3: 18,
@@ -105,7 +132,8 @@ const DATA = {
   MAPS: _MAPS,
   MAP_LIST: Object.keys(_MAPS).map(mapKey => _MAPS[mapKey]),
   CLEARING_TYPES: _CLEARING_TYPES,
-  CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey])
+  CLEARING_TYPES_LIST: Object.keys(_CLEARING_TYPES).map(clearingTypeKey => _CLEARING_TYPES[clearingTypeKey]),
+  BOT_PLAYERS: _BOT_PLAYERS
 }
 
 console.log("-- DATA --")

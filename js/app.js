@@ -2,6 +2,7 @@ const PLAYER_LIST_STORAGE_KEY = "playerList";
 
 const State = {
   playerList: [],
+  addBot: false,
   game: null
 }
 
@@ -20,7 +21,7 @@ function populatePlayerListHtml() {
   while(playerList.firstChild) {
     playerList.removeChild(playerList.firstChild);
   }
-  State.playerList.forEach((playerName, index) => {
+  State.playerList.forEach((player, index) => {
     const newPlayerListItem = document.createElement("li");
 
     const button = document.createElement("button");
@@ -30,7 +31,7 @@ function populatePlayerListHtml() {
     button.addEventListener("click", clearPlayer);
     newPlayerListItem.appendChild(button);
 
-    newPlayerListItem.appendChild(document.createTextNode(playerName));
+    newPlayerListItem.appendChild(document.createTextNode(player.name));
 
     playerList.appendChild(newPlayerListItem);
   });
@@ -62,20 +63,41 @@ function addPlayer(event) {
   event.preventDefault();
 
   const playerName = document.getElementById("playerNameInput").value;
-  if (playerName === "") {
-    return;
+  // Don't add players with duplicate, bot, or empty names
+  if (!State.addBot) {
+    const badNames = State.playerList.map(player => player.name)
+      .concat(Object.values(DATA.BOT_PLAYERS).map(player => player.name))
+      .concat(["", "Random Bot"]);
+    if (badNames.includes(playerName)) {
+      throw "Invalid player name.";
+    }
   }
+  // Don't add too many bot players
+  else if (State.addBot) {
+     const botPlayers = State.playerList.filter(player => player.bot).length;
+     const maxBots = Object.keys(DATA.BOT_PLAYERS).length;
+     if (botPlayers >= maxBots) {
+       throw "Maximum number of bot players reached.";
+     }
+   }
 
-  State.playerList.push(playerName);
+  State.playerList.push({
+    name: playerName || "Random Bot",
+    faction: undefined,
+    iconFileName: null,
+    bot: State.addBot
+  });
   savePlayersLocally();
 
   populatePlayerListHtml();
   document.getElementById("playerNameInput").value = "";
 }
 
-function canFactionBePicked(faction, selectedFactions) {
-  if (faction.onlyPresentWith && faction.onlyPresentWith.length > 0) {
-    const requiredFactions = faction.onlyPresentWith.map(presentWith => DATA.FACTIONS[presentWith] || console.error(`Invalid faction in onlyPresentWith for ${faction.name}: ${presentWith}`));
+function canFactionBePicked(faction, selectedFactions, forBot) {
+  if (forBot && !isBotFaction(faction)) return false;
+  const factionObj = getFaction(faction);
+  if (factionObj.onlyPresentWith && factionObj.onlyPresentWith.length > 0) {
+    const requiredFactions = factionObj.onlyPresentWith.map(presentWith => presentWith || console.error(`Invalid faction in onlyPresentWith for ${factionObj.name}: ${presentWith}`));
     if (requiredFactions.filter(requiredFaction => selectedFactions.indexOf(requiredFaction) === -1).length > 0) {
       return false;
     }
@@ -83,39 +105,56 @@ function canFactionBePicked(faction, selectedFactions) {
   return true;
 }
 
-function randomizeFactions() {
-  const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
-  const numPlayers = State.playerList.length;
-  const minReach = DATA.REACH_BY_PLAYER_COUNT[numPlayers];
-  var currentReach = 0;
-  const selectedFactions = [];
+function getFaction(faction) {
+  return DATA.FACTIONS[faction];
+}
 
-  if(numPlayers > availableFactions.length) {
+function isBotFaction(faction) {
+  return Object.values(DATA.BOT_PLAYERS).map(bot => bot.faction).includes(faction);
+}
+
+function selectRandomFactions(numHumans, numBots, chosenFactions) {
+  const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
+  const numFactions = numHumans + numBots + chosenFactions.length;
+  if(numFactions <= 1) {
+    throw "Insufficient player count.";
+  }
+  else if(numFactions > availableFactions.length) {
     throw "Not enough available factions for this player count.";
   }
 
-  for(var i = 0; i < numPlayers; i++) {
+  const minReach = DATA.REACH_BY_PLAYER_COUNT[numFactions];
+  var currentReach = 0;
+  const selectedFactions = [];
+
+  function selectFaction(faction) {
+    selectedFactions.push(faction);
+    availableFactions.splice(availableFactions.indexOf(faction), 1);
+    currentReach += getFaction(faction).reach;
+  }
+
+  function pickReachableFaction(forBot) {
     // Calculate the minimum reach a faction can have to still be considered. We do this by summing the X biggest factions, where X is remaining players - 1, then
     //  determining the minimum reach that the last faction could have to still hit the target reach value.
-    const biggestCombinationStartIndex = availableFactions.length - (numPlayers - 1 - selectedFactions.length);
-    const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => faction.reach).reduce((total, reach) => total += reach, 0);
+    const biggestCombinationStartIndex = availableFactions.length - (numFactions - 1 - selectedFactions.length);
+    const minimumFactionReach = minReach - currentReach - availableFactions.slice(biggestCombinationStartIndex).map(faction => getFaction(faction).reach).reduce((total, reach) => total += reach, 0);
     // Drop any factions from the list that would no longer allow us to hit the target reach
-    while (availableFactions.length > 0 && availableFactions[0].reach < minimumFactionReach) {
+    while (availableFactions.length > 0 && getFaction(availableFactions[0]).reach < minimumFactionReach) {
       availableFactions.splice(0, 1);
     }
     if (availableFactions.length == 0) {
       throw "There is no combination of available factions which hits the target reach.";
     }
     // Pluck random faction
-    const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions));
+    const pickableFactions = availableFactions.filter(faction => canFactionBePicked(faction, selectedFactions, forBot));
     const pickableFactionIndex = Math.floor(Math.random() * pickableFactions.length);
     const faction = pickableFactions[pickableFactionIndex];
-    selectedFactions.push(faction);
-    const availableFactionsIndex = availableFactions.indexOf(faction);
-    availableFactions.splice(availableFactionsIndex, 1);
-    currentReach += faction.reach;
+    selectFaction(faction);
   }
 
+  chosenFactions.forEach(faction => selectFaction(faction));
+  for(var i = 0; i < numBots; i++) pickReachableFaction(true);
+  for(var i = 0; i < numHumans; i++) pickReachableFaction(false);
   return selectedFactions;
 }
 
@@ -142,22 +181,69 @@ function randomizeMap() {
   }
 }
 
-function randomizePlayerSetup() {
+function getBotPlayer(faction) {
+  if (!isBotFaction(faction)) throw "Bots cannot play this faction.";
+  const bots = Object.values(DATA.BOT_PLAYERS);
+  for (let i = 0; i < bots.length; i++) {
+    if (faction == bots[i].faction) return bots[i];
+  }
+}
+
+function assignPlayerFactions() {
   const players = Array.from(State.playerList);
-  const factions = randomizeFactions();
-  // randomly assign factions to players
-  return players.map(player => ({
-      player: player,
-      faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
-    }));
+  const numBots = players.filter(player => player.bot).length
+  const chosenFactions = players.filter(player => player.faction);
+  const factions = selectRandomFactions(players.length - numBots, numBots, chosenFactions);
+  const setup = [];
+  // Pre-chosen factions go first
+  players.forEach(player => {
+    if (player.faction) {
+      factions.splice(player.faction, 1);
+      setup.push(player);
+    }
+  })
+  // Assign bot factions to all bots next
+  players.forEach(player => {
+    if (player.bot && player.faction === undefined) {
+      const botFaction = factions.filter(faction => isBotFaction(faction))[0];
+      factions.splice(factions.indexOf(botFaction), 1);
+      setup.push(getBotPlayer(botFaction));
+    }
+  })
+  // Assign remaining factions to players last
+  players.forEach(player => {
+    if (!player.bot && player.faction === undefined) {
+      const newPlayer = {...player};
+      newPlayer.faction = factions.splice(0,1)[0];
+      setup.push(newPlayer);
+    }
+  })
+  return setup;
 }
 
 function randomizeGame() {
-  const playerSetups = randomizePlayerSetup();
+  const playerSetups = assignPlayerFactions();
   return {
     tableSize: playerSetups.length,
     seats: playerSetups.sort(() => Math.random() - 0.5),
     map: randomizeMap()
+  }
+}
+
+function toggleBot() {
+  const nameInput = document.getElementById("playerNameInput");
+  const addBot = document.getElementById("add-bot");
+  if (addBot.checked) {
+    nameInput.setAttribute("readonly", true);
+    nameInput.setAttribute("placeholder", "Random Bot");
+    nameInput.setAttribute("value", "");
+    State.addBot = true;
+  }
+  else {
+    nameInput.removeAttribute("readonly");
+    nameInput.setAttribute("placeholder", "");
+    nameInput.setAttribute("value", "");
+    State.addBot = false;
   }
 }
 
@@ -167,9 +253,11 @@ function getSeatListHtml(seats) {
 
   seats.forEach(seat => {
     const seatListItem = document.createElement("li");
-    const iconPath = `./icons/${seat.faction.iconFileName}`;
+    const factionObj = getFaction(seat.faction);
+    const iconFileName = seat.iconFileName ?? factionObj.iconFileName;
+    const iconPath = `./icons/${iconFileName}`;
     const icon = iconPath ? `<img src=${iconPath} class="faction-icon">` : "";
-    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${seat.faction.name}</b> ${icon}`;
+    seatListItem.innerHTML = `<b>${seat.name}</b> will play <b>${factionObj.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
   });
   return seatList;
@@ -240,7 +328,7 @@ function generateGame(event) {
   event.preventDefault();
   State.game = randomizeGame();
   populateGameHtml();
-  console.log(JSON.stringify(State.game, null, 1)); 
+  console.log(JSON.stringify(State.game, null, 1));
 }
 
 loadState();

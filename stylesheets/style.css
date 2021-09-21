@@ -61,6 +61,10 @@ ul.seat-list {
     display: inline-flex;
 }
 
+.options {
+  font-size: smaller;
+}
+
 .button {
     padding: .25em;
     margin: .25em 1em;
