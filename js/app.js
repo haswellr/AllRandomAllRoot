@@ -63,9 +63,23 @@ function addPlayer(event) {
   event.preventDefault();
 
   const playerName = document.getElementById("playerNameInput").value;
-  if (playerName === "" && !State.addBot) {
-    return;
+  // Don't add players with duplicate, bot, or empty names
+  if (!State.addBot) {
+    const badNames = State.playerList.map(player => player.name)
+      .concat(Object.values(DATA.BOT_PLAYERS).map(player => player.name))
+      .concat(["", "Random Bot"]);
+    if (badNames.includes(playerName)) {
+      throw "Invalid player name.";
+    }
   }
+  // Don't add too many bot players
+  else if (State.addBot) {
+     const botPlayers = State.playerList.filter(player => player.bot).length;
+     const maxBots = Object.keys(DATA.BOT_PLAYERS).length;
+     if (botPlayers >= maxBots) {
+       throw "Maximum number of bot players reached.";
+     }
+   }
 
   State.playerList.push({
     name: playerName || "Random Bot",
@@ -73,7 +87,6 @@ function addPlayer(event) {
     iconFileName: null,
     bot: State.addBot
   });
-
   savePlayersLocally();
 
   populatePlayerListHtml();
