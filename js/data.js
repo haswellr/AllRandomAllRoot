@@ -91,24 +91,28 @@ const _CLEARING_TYPES = {
 
 const _BOT_PLAYERS = {
   MECHANICAL_MARQUISE: {
-      player: "The Mechanical Marquise",
+      name: "The Mechanical Marquise",
       faction: "MARQUISE_DE_CAT",
-      iconFileName: "faction-marquise-bot.png"
+      iconFileName: "faction-marquise-bot.png",
+      bot: true
   },
   ELECTRICAL_EYRIE: {
-    player: "The Electrical Eyrie",
+    name: "The Electrical Eyrie",
     faction: "EYRIE_DYNASTIES",
-    iconFileName: "faction-eyrie-bot.png"
+    iconFileName: "faction-eyrie-bot.png",
+    bot: true
   },
   AUTOMATED_ALLIANCE:{
-    player: "The Automated Alliance",
+    name: "The Automated Alliance",
     faction: "WOODLAND_ALLIANCE",
-    iconFileName: "faction-woodland-bot.png"
+    iconFileName: "faction-woodland-bot.png",
+    bot: true
   },
   VAGABOT: {
-    player: "The Vagabot",
+    name: "The Vagabot",
     faction: "VAGABOND_1",
-    iconFileName: "faction-vagabond-bot.png"
+    iconFileName: "faction-vagabond-bot.png",
+    bot: true
   }
 }
 

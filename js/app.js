@@ -2,6 +2,7 @@ const PLAYER_LIST_STORAGE_KEY = "playerList";
 
 const State = {
   playerList: [],
+  addBot: false,
   game: null
 }
 
@@ -20,7 +21,7 @@ function populatePlayerListHtml() {
   while(playerList.firstChild) {
     playerList.removeChild(playerList.firstChild);
   }
-  State.playerList.forEach((playerName, index) => {
+  State.playerList.forEach((player, index) => {
     const newPlayerListItem = document.createElement("li");
 
     const button = document.createElement("button");
@@ -30,7 +31,7 @@ function populatePlayerListHtml() {
     button.addEventListener("click", clearPlayer);
     newPlayerListItem.appendChild(button);
 
-    newPlayerListItem.appendChild(document.createTextNode(playerName));
+    newPlayerListItem.appendChild(document.createTextNode(player.name));
 
     playerList.appendChild(newPlayerListItem);
   });
@@ -62,11 +63,17 @@ function addPlayer(event) {
   event.preventDefault();
 
   const playerName = document.getElementById("playerNameInput").value;
-  if (playerName === "") {
+  if (playerName === "" && !State.addBot) {
     return;
   }
 
-  State.playerList.push(playerName);
+  State.playerList.push({
+    name: playerName || "Random Bot",
+    faction: undefined,
+    iconFileName: null,
+    bot: State.addBot
+  });
+
   savePlayersLocally();
 
   populatePlayerListHtml();
@@ -93,7 +100,7 @@ function isBotFaction(faction) {
   return Object.values(DATA.BOT_PLAYERS).map(bot => bot.faction).includes(faction);
 }
 
-function randomizeFactions(numHumans, numBots, chosenFactions) {
+function selectRandomFactions(numHumans, numBots, chosenFactions) {
   const availableFactions = Array.from(DATA.FACTION_LIST_BY_REACH);
   const numFactions = numHumans + numBots + chosenFactions.length;
   if(numFactions <= 1) {
@@ -169,35 +176,61 @@ function getBotPlayer(faction) {
   }
 }
 
-function randomizePlayerSetup() {
+function assignPlayerFactions() {
   const players = Array.from(State.playerList);
-  const numBots = + document.getElementById("use-bot").checked;
-  const chosenFactions = [];  // Should pull from state along with bots
-  const factions = randomizeFactions(players.length, numBots, chosenFactions);
+  const numBots = players.filter(player => player.bot).length
+  const chosenFactions = players.filter(player => player.faction);
+  const factions = selectRandomFactions(players.length - numBots, numBots, chosenFactions);
   const setup = [];
-  var botsLeft = numBots;
-  // Will want to assign any chosenFactions properly first
-  // Then randomly assign bot factions to all bots
-  factions.forEach(faction => {
-    if (isBotFaction(faction) && botsLeft > 0) {
-      setup.push(getBotPlayer(faction));
-      factions.splice(factions.indexOf(faction), 1);
-      botsLeft--;
+  // Pre-chosen factions go first
+  players.forEach(player => {
+    if (player.faction) {
+      factions.splice(player.faction, 1);
+      setup.push(player);
     }
   })
-  // Randomly assign remaining factions to players
-  return setup.concat(players.map(player => ({
-      player: player,
-      faction: factions.splice(Math.floor(Math.random() * factions.length), 1)[0],
-    })));
+  // Assign bot factions to all bots next
+  players.forEach(player => {
+    if (player.bot && player.faction === undefined) {
+      const botFaction = factions.filter(faction => isBotFaction(faction))[0];
+      factions.splice(factions.indexOf(botFaction), 1);
+      setup.push(getBotPlayer(botFaction));
+    }
+  })
+  // Assign remaining factions to players last
+  players.forEach(player => {
+    if (!player.bot && player.faction === undefined) {
+      const newPlayer = {...player};
+      newPlayer.faction = factions.splice(0,1)[0];
+      setup.push(newPlayer);
+    }
+  })
+  return setup;
 }
 
 function randomizeGame() {
-  const playerSetups = randomizePlayerSetup();
+  const playerSetups = assignPlayerFactions();
   return {
     tableSize: playerSetups.length,
     seats: playerSetups.sort(() => Math.random() - 0.5),
     map: randomizeMap()
+  }
+}
+
+function toggleBot() {
+  const nameInput = document.getElementById("playerNameInput");
+  const addBot = document.getElementById("add-bot");
+  if (addBot.checked) {
+    nameInput.setAttribute("readonly", true);
+    nameInput.setAttribute("placeholder", "Random Bot");
+    nameInput.setAttribute("value", "");
+    State.addBot = true;
+  }
+  else {
+    nameInput.removeAttribute("readonly");
+    nameInput.setAttribute("placeholder", "");
+    nameInput.setAttribute("value", "");
+    State.addBot = false;
   }
 }
 
@@ -211,7 +244,7 @@ function getSeatListHtml(seats) {
     const iconFileName = seat.iconFileName ?? factionObj.iconFileName;
     const iconPath = `./icons/${iconFileName}`;
     const icon = iconPath ? `<img src=${iconPath} class="faction-icon">` : "";
-    seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${factionObj.name}</b> ${icon}`;
+    seatListItem.innerHTML = `<b>${seat.name}</b> will play <b>${factionObj.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
   });
   return seatList;
