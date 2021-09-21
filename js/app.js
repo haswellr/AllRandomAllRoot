@@ -210,7 +210,7 @@ function getSeatListHtml(seats) {
     const factionObj = getFaction(seat.faction);
     const iconFileName = seat.iconFileName ?? factionObj.iconFileName;
     const iconPath = `./icons/${iconFileName}`;
-    const icon = iconPath ? `<img src=${iconPath} width="32" height="32">` : "";
+    const icon = iconPath ? `<img src=${iconPath} class="faction-icon">` : "";
     seatListItem.innerHTML = `<b>${seat.player}</b> will play <b>${factionObj.name}</b> ${icon}`;
     seatList.appendChild(seatListItem);
   });
